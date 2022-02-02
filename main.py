@@ -10,7 +10,7 @@ import seaborn as sns
 df = importando_df()
 
 option = st.sidebar.selectbox( 'Para qual página você deseja ir?',
-('Inicio', 'Analises', 'Dados'))
+('Inicio', 'Analises'))
 
 if option == "Inicio":
     st.title("EDA Car Sales")
@@ -18,7 +18,7 @@ if option == "Inicio":
     st.dataframe(df)
 
 elif option == "Analises":
-    st.title("Analises dos dados de vendas de carro")
+    st.title("Análises dos dados de vendas de carro")
     st.write("O nosso dataset conta com um total de 30 montadoras, sendo essas representadas no gráfico abaixo, junto aos números de vendas.")
 
     df_vendas = df.groupby("Manufacturer")["Sales_in_thousands"].sum()
@@ -27,9 +27,9 @@ elif option == "Analises":
     df_vendas.reset_index(drop=True, inplace=True)
 
     
-    fig = px.pie(df_vendas, values="Sales_in_thousands", names='Manufacturer', title='Total de Venda das Fabricantes de Carros')
+    fig_pie = px.pie(df_vendas, values="Sales_in_thousands", names='Manufacturer', title='Total de Venda das Fabricantes de Carros')
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig_pie)
 
 
     # Gráfico de barra
@@ -42,28 +42,28 @@ elif option == "Analises":
 
     
     manufacture_values = df['Manufacturer'].value_counts()[:5]
-    fig2 = px.bar(df_m, x="Manufacturer", y="count", color="Manufacturer" , barmode="group", title='Top 5 quantidade de modelos por montadoras')
-    st.plotly_chart(fig2)
+    fig_bar = px.bar(df_m, x="Manufacturer", y="count", color="Manufacturer" , barmode="group", title='Top 5 quantidade de modelos por montadoras')
+    st.plotly_chart(fig_bar)
 
     # Gráfico de histograma
     st.write("Com um histograma é possivel ver a distribuição de vendas em milhares do nosso database. Na parte debaixo temos representado a quatidade de vendas, concetradas nos valores do dataset. Já na parte de cima temos o modelo correspondente a esse valor.")
-    fig3 = px.histogram(df, x="Sales_in_thousands", color="Manufacturer", marginal="rug", hover_data=df.columns, title='Histograma de vendas em milhares')
-    st.plotly_chart(fig3)
+    fig_hist = px.histogram(df, x="Sales_in_thousands", color="Manufacturer", marginal="rug", hover_data=df.columns, title='Histograma de vendas em milhares')
+    st.plotly_chart(fig_hist)
 
     # Gráfico de histograma 2
     st.write("Com um histograma é possivel ver a distribuição de preço em milhares do nosso database. Na parte debaixo temos representado a quatidade de carros com mesma faixa de preço, concetradas nos valores do dataset. Já na parte de cima temos o modelo correspondente a esse valor.")
-    fig4 = px.histogram(df, x="Price_in_thousands", color="Model", marginal="rug", hover_data=df.columns, title='Histograma de preço em milhares')
-    st.plotly_chart(fig4)
+    fig_hist2 = px.histogram(df, x="Price_in_thousands", color="Model", marginal="rug", hover_data=df.columns, title='Histograma de preço em milhares')
+    st.plotly_chart(fig_hist2)
 
     # HeatMap
     st.write("No gráfico de calor abaixo, é possivel perceber as correlações entre as variaveis do nosso dataframe.")
-    fig5 = px.imshow(df.corr())
-    st.write(fig5)
+    fig_corr = px.imshow(df.corr())
+    st.write(fig_corr)
 
     # MONTADORAS #
 
     st.markdown("## Ford")
-    st.write("Analise dos valores da montadora Ford.")
+    st.write("Análise dos valores da montadora Ford.")
     #Data frame com apenas Carros da ford  
     df_ford = df.loc[df['Manufacturer']=='Ford',:].iloc[:,[1,2,3,4,5,6,7,8,11,12,13,14,15]].copy()
     df_ford = df_ford.sort_values(['Sales_in_thousands'],ascending=False)
@@ -71,13 +71,13 @@ elif option == "Analises":
     st.dataframe(df_ford.head(5)) 
 
     #Heatmap ford
-    fig6 = px.imshow(df_ford.corr())
-    st.write(fig6)
+    fig_corr_ford = px.imshow(df_ford.corr())
+    st.write(fig_corr_ford)
 
     st.write("Podemos dizer que clientes da ford tem uma maior consciência de compra tendo em vista que muitos fatores têm uma influência forte na compra.")
 
     st.markdown("## Dodge")
-    st.write("Analise dos valores da montadora Dodge.")
+    st.write("Análise dos valores da montadora Dodge.")
 
     #Data frame com apenas Carros da Dodge
     df_Dodge = df.loc[df['Manufacturer']=='Dodge',:].iloc[:,[1,2,3,4,5,6,7,8,11,12,13,14,15]].copy()
@@ -86,14 +86,14 @@ elif option == "Analises":
     st.dataframe(df_Dodge.head(5)) 
 
     #Heatmap dodge
-    fig7 = px.imshow(df_Dodge.corr())
-    st.write(fig7)
+    fig_corr_dodge = px.imshow(df_Dodge.corr())
+    st.write(fig_corr_dodge)
 
     st.write("Já o público da Dodge seria mais sensorial pelo fato de que a compra é muito influenciada por uma visualização de robustez do veículo por aparentar ser grande e pesada.")
 
 
     st.markdown("## Toyota")                
-    st.write("Analise dos valores da montadora Toyota.")
+    st.write("Análise dos valores da montadora Toyota.")
 
     #Data frame com apenas Carros da Toyota
     df_Toyota = df.loc[df['Manufacturer']=='Toyota',:].iloc[:,[1,2,3,4,5,6,7,8,11,12,13,14,15]].copy()
@@ -102,10 +102,10 @@ elif option == "Analises":
     st.dataframe(df_Toyota.head(5))
 
     #Heatmap toyota
-    fig8 = px.imshow(df_Toyota.corr())
-    st.write(fig8)
+    fig_corr_toyota = px.imshow(df_Toyota.corr())
+    st.write(fig_corr_toyota)
 
-    st.markdown("### Resultados Observados na Analise")
+    st.markdown("### Resultados Observados na Análise")
     st.markdown("- As montadoras que mais vendem são ford, dodge e toyota respectivamente.")
     st.markdown("- Um dado curioso é que os veículos mais vendidos de cada montadora tem uma faixa de valor bem similar porém uma análise curiosa que pode ser observada pelo mapa de calor é que o público que compra um Toyota dificilmente compraria um Dodge tendo em vista que o indivíduo prefere ter uma melhor autonomia do veículo.")
     st.markdown("- Porém observamos que entre Ford e Dodge relação mais similar pois o público alvo das montadoras não se importam muito com a eficiência do motor e sim com a potência e com o tamanho do carro.")
